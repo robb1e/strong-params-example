@@ -1,21 +1,16 @@
 class UsersController < ApplicationController
 
-  class UserParams
-    include ActionController::StrongParameters
-
-    attr_reader :request
-
-    def initialize req
-      @request = req
-    end
-
-    def clean
-      params.require(:user).permit(:name)
+  class UserParams < ActionController::Parameters
+    def initialize params
+      filtered_params = params.
+        require(:user).
+        permit(:name)
+      super(filtered_params)
     end
   end
 
   def create
-    User.create(UserParams.new(request).clean)
+    User.create(UserParams.new(params))
   end
 
 end

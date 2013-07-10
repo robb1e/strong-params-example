@@ -1,11 +1,13 @@
 class UsersController < ApplicationController
 
-  def create
-    User.create(user_params)
+  class UserParams
+    def self.clean params
+      ActionController::Parameters.new(params).require(:user).permit(:name)
+    end
   end
 
-  private
-  def user_params
-    params.require(:user).permit(:name)
+  def create
+    User.create(UserParams.clean(params))
   end
+
 end

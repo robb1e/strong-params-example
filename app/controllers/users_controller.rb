@@ -1,20 +1,19 @@
 class UsersController < ApplicationController
 
-  class UserParams < ActionController::Parameters
-    def initialize params
+  class UserParams
+    def self.build params
       filtered_params = params.
         require(:user).
         permit(:name)
-      super(filtered_params)
     end
   end
 
   def create
-    User.create(UserParams.new(params))
+    User.create(UserParams.build(params))
   end
 
   def update
-    User.find(params[:id]).update_attributes(UserParams.new(params))
+    User.find(params[:id]).update_attributes(UserParams.build(params))
     redirect_to root_path
   end
 

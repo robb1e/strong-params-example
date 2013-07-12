@@ -5,7 +5,7 @@ describe UsersController do
   describe UsersController::UserParams do
     it 'cleans the params' do
       params = ActionController::Parameters.new(user: {foo: 'bar', name: 'baz'})
-      user_params = UsersController::UserParams.new(params)
+      user_params = UsersController::UserParams.build(params)
       expect(user_params).to eq({name: 'baz'}.with_indifferent_access)
     end
   end
@@ -16,7 +16,7 @@ describe UsersController do
 
     context 'nodb' do
       before do
-        UsersController::UserParams.stub(:new) { model_params }
+        UsersController::UserParams.stub(:build) { model_params }
       end
 
       it 'creates a user' do
